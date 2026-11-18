@@ -66,6 +66,16 @@ class UnregisterTests(unittest.TestCase):
             ["student+chess@example.com", "other@example.com"],
         )
 
+    def test_unregister_requires_email(self):
+        response = self.client.delete("/activities/Chess%20Club/signup")
+
+        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response.json()["detail"][0]["loc"], ["query", "email"])
+        self.assertEqual(
+            activities["Chess Club"]["participants"],
+            ["student+chess@example.com", "other@example.com"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
